@@ -7,6 +7,40 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <header>
+            <a href="#" class="app-title">WEATHER</a>
+        </header>
+        <main class="main">
+            <section class="current-weather">
+                <p class="date" id="date">YYYY年MM月DD日</p>
+                <p class="current-map" id="city">東京都</p>
+                <div class="weather-row">
+                    <div class="temp-range">
+                        <span class="temp-max" id="temp-max">26℃</span>
+                        <span>/</span>
+                        <span class="temp-min" id="temp-min">19℃</span>
+                    </div>
+                    <div class="weather-icon" id="icon">🌤️</div>
+                </div>
+                <div class="border">＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</div>
+                <div class="weather-row">
+                    <div class="current-detail">
+                        <p>今日の詳細▶</p>
+                    </div>
+                    <div class="current-detail">
+                        <span id="humidity">10%</span>
+                    </div>
+                    <div class="current-detail">
+                        <span id="wind">1m/s</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="date-weather">
+                <p class="date">時間ごとの天気</p>
+            </section>
+
+        </main>
 
 
         <script src="script.js"></script>

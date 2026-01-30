@@ -6,11 +6,9 @@ let todos = JSON.parse(localStorage.getItem("todo"))||[];
 
 
 
-//API取得
+//今日の天気API取得
 async function getWeather() {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}&units=metric&lang=ja`;
-
-
   const res = await fetch(url);
   if (!res.ok) {
     console.error("APIエラー:", res.status);
@@ -44,8 +42,43 @@ function getWeatherIcon(main) {
     default: return "🌤️";
   }
 }
+//5day3hourの天気API取得
+async function getDateWeather() {
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=Tokyo&appid=${API_KEY}&units=metric&lang=ja`;
+    const res = await fetch(url);
+    if (!res.ok) {
+        console.error("APIエラー:", res.status);
+        return;
+    }
+
+    const targetHours = ["6:00:00","9:00:00","12:00:00","15:00:00","18:00:00","21:00:00"];
+    const todayList = data.list.filter(item =>{
+        return targetHours.some(hour => item.dt_txt.includes(hour));
+    });
+
+    const container = document.getElementById("hourly");
+    innerHTML="";
+
+    todayList.forEach(item =>{
+        const time = item.dt_txt.slice(11,16);
+        const temp = Math.around(item.main.temp);
+        const icon = getWeatherIcon(item.weather[0].main);
+
+        const card=`
+        <div class="hour-card">
+            <div>${time}</div>
+            <div class="hour-icon">${icon}</div>
+            <div>${temp}℃</div>
+        </div>
+        `;
+
+        container.insertAdjacentHTML("beforeend",card);
+
+    });    
+}
 
 
 
 getWeather();
 renderDate();
+getDateWeather();

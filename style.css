@@ -74,3 +74,18 @@ body{
     padding: 10px 35px 10px 35px;
     margin: 40px 10px;
 }
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 10px;
+}
+.hour-card {
+  min-width: 80px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  flex-shrink: 0;
+}
+

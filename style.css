@@ -1,6 +1,7 @@
 body{
     margin:0 auto;
     max-width: 400px;
+    background-color: rgb(241, 241, 237);
 }
 
 .app-title{
@@ -19,7 +20,8 @@ body{
 
 /*current-section*/
 .current-weather{
-    background-color: rgb(234, 230, 208);
+    background-color: #FFF;
+    border-color:rgba(20, 69, 107, 0.842) ;
     border-radius: 10px;
     padding: 10px 35px 10px 35px;
     margin: 20px 10px;

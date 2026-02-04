@@ -3,16 +3,16 @@ body{
     max-width: 400px;
 }
 
-.bg-morning{background-image: url(/assets/bg/weatherapp-morning.jpg);}
-.bg-lunch{background-image: url(./assets/bg/weatherapp-lunch.jpg);}
-.bg-evening{background-image: url(./assets/bg/weatherapp-evening.jpg);}
-.bg-night{background-image: url(./assets/bg/weatherapp-night.jpg);}
+.bg-morning{background-image: url(../assets/bg/weatherapp-morning.jpg);}
+.bg-lunch{background-image: url(../assets/bg/weatherapp-lunch.jpg);}
+.bg-evening{background-image: url(../assets/bg/weatherapp-evening.jpg);}
+.bg-night{background-image: url(../assets/bg/weatherapp-night.jpg);}
 
 .app-title{
     display: block;
     text-align: center;
     text-decoration: none;
-    color: rgba(20, 69, 107, 0.842);
+    color: rgba(20, 69, 107, 0.631);
     font-weight: bold;
     font-size: 40px;
     padding: 30px 40px;
@@ -24,7 +24,7 @@ body{
 
 /*current-section*/
 .current-weather{
-    background-color: #FFF;
+    background-color: #ffffff5f;
     border-color:rgba(20, 69, 107, 0.842) ;
     border-radius: 10px;
     padding: 10px 35px 10px 35px;
@@ -74,8 +74,9 @@ body{
 }
 
 
+/*時間ごとの天気*/
 .date-weather{
-    background-color: rgb(234, 230, 208);
+    background-color: #ffffff5f;
     border-radius: 10px;
     padding: 10px 35px 10px 35px;
     margin: 40px 10px;

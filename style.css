@@ -1,8 +1,12 @@
 body{
     margin:0 auto;
     max-width: 400px;
-    background-color: rgb(241, 241, 237);
 }
+
+.bg-morning{background-image: url(/assets/bg/weatherapp-morning.jpg);}
+.bg-lunch{background-image: url(./assets/bg/weatherapp-lunch.jpg);}
+.bg-evening{background-image: url(./assets/bg/weatherapp-evening.jpg);}
+.bg-night{background-image: url(./assets/bg/weatherapp-night.jpg);}
 
 .app-title{
     display: block;

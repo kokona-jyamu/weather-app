@@ -6,6 +6,22 @@ let todos = JSON.parse(localStorage.getItem("todo"))||[];
 
 
 
+//bg：時間に合わせた背景画像設定
+function setBackgroundByTime(){
+  const hour = new Date().getHours();
+  let className = "";
+
+  if(hour>=4 && hour<9){
+    className = "bg-morning";
+  }else if(hour>=9 && hour<15){
+    className = "bg-lunch";
+  }else if(hour>=15 && hour<19){
+    className = "bg-evening";
+  }else if(hour>=19 && hour<4){
+    className = "bg-night";
+  }
+  document.body.className = className;
+}
 //今日の天気API取得
 async function getWeather() {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}&units=metric&lang=ja`;
@@ -78,7 +94,7 @@ async function getDateWeather() {
 }
 
 
-
+setBackgroundByTime();
 getWeather();
 renderDate();
 getDateWeather();

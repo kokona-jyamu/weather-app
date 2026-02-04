@@ -67,17 +67,21 @@ async function getDateWeather() {
         return;
     }
 
+    const data = await res.json();
+    console.log(data);
+
     const targetHours = ["6:00:00","9:00:00","12:00:00","15:00:00","18:00:00","21:00:00"];
-    const todayList = data.list.filter(item =>{
-        return targetHours.some(hour => item.dt_txt.includes(hour));
-    });
+    
+    const todayList = data.list.filter(item =>
+        targetHours.some(hour => item.dt_txt.includes(hour))
+    );
 
     const container = document.getElementById("hourly");
-    innerHTML="";
+    container.innerHTML="";
 
     todayList.forEach(item =>{
         const time = item.dt_txt.slice(11,16);
-        const temp = Math.around(item.main.temp);
+        const temp = Math.round(item.main.temp);
         const icon = getWeatherIcon(item.weather[0].main);
 
         const card=`

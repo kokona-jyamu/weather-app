@@ -40,7 +40,7 @@ async function getWeather() {
   document.getElementById("wind").textContent = "風速"+Math.round(data.wind.speed) + " m/s";
   document.getElementById("icon").textContent = getWeatherIcon(data.weather[0].main);
 }
-//日付取得
+//年月日・日付取得
 function renderDate(){
     const date = new Date();
     const text = `${date.getFullYear()}年
@@ -58,47 +58,50 @@ function getWeatherIcon(main) {
     default: return "🌤️";
   }
 }
+//月日・日付取得
+function renderDate2(){
+    const date = new Date();
+    const text = `${date.getMonth()+1}月
+                  ${date.getDate()}日`;
+    document.getElementById("date2").textContent = text;
+}
 //5day3hourの天気API取得
-async function getDateWeather() {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?q=Tokyo&appid=${API_KEY}&units=metric&lang=ja`;
-    const res = await fetch(url);
-    if (!res.ok) {
-        console.error("APIエラー:", res.status);
-        return;
-    }
+async function getDateWeather() { 
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=Tokyo&appid=${API_KEY}&units=metric&lang=ja`;
+  const res = await fetch(url);
+  const data = await res.json();
 
-    const data = await res.json();
-    console.log(data);
+  const targetHours = ["06:00:00","09:00:00","12:00:00","15:00:00","18:00:00","21:00:00"];
+  const today = new Date().toISOString().slice(0,10);
 
-    const targetHours = ["6:00:00","9:00:00","12:00:00","15:00:00","18:00:00","21:00:00"];
-    
-    const todayList = data.list.filter(item =>
-        targetHours.some(hour => item.dt_txt.includes(hour))
-    );
+  const todayList = data.list.filter(item => {
+    const date = item.dt_txt.slice(0,10);
+    const time = item.dt_txt.slice(11);
+    return date === today && targetHours.includes(time);
+  });
 
-    const container = document.getElementById("hourly");
-    container.innerHTML="";
+  const container = document.getElementById("hourly");
+  container.innerHTML = "";
 
-    todayList.forEach(item =>{
-        const time = item.dt_txt.slice(11,16);
-        const temp = Math.round(item.main.temp);
-        const icon = getWeatherIcon(item.weather[0].main);
+  todayList.forEach(item => {
+    const time = item.dt_txt.slice(11,16);
+    const temp = Math.round(item.main.temp);
+    const icon = getWeatherIcon(item.weather[0].main);
 
-        const card=`
-        <div class="hour-card">
-            <div>${time}</div>
-            <div class="hour-icon">${icon}</div>
-            <div>${temp}℃</div>
-        </div>
-        `;
-
-        container.insertAdjacentHTML("beforeend",card);
-
-    });    
+    const card = `
+      <div class="hour-card">
+        <div>${time}</div>
+        <div class="hour-icon">${icon}</div>
+        <div>${temp}℃</div>
+      </div>
+    `;
+    container.insertAdjacentHTML("beforeend", card);
+  });
 }
 
 
 setBackgroundByTime();
 getWeather();
 renderDate();
+renderDate2()
 getDateWeather();

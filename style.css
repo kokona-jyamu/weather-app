@@ -12,10 +12,11 @@ body{
     display: block;
     text-align: center;
     text-decoration: none;
-    color: rgba(20, 69, 107, 0.631);
+    color: rgba(251, 253, 255, 0.631);
     font-weight: bold;
     font-size: 40px;
     padding: 30px 40px;
+    letter-spacing: 3px;
 }
 
 .main{
@@ -25,7 +26,6 @@ body{
 /*current-section*/
 .current-weather{
     background-color: #ffffff5f;
-    border-color:rgba(20, 69, 107, 0.842) ;
     border-radius: 10px;
     padding: 10px 35px 10px 35px;
     margin: 20px 10px;
@@ -78,20 +78,49 @@ body{
 .date-weather{
     background-color: #ffffff5f;
     border-radius: 10px;
-    padding: 10px 35px 10px 35px;
+    padding: 10px 30px 15px 30px;
     margin: 40px 10px;
+}
+/*カルーセル加工*/
+.carousel-wrapper {
+  position: relative;
+}
+.carousel-wrapper::before,
+.carousel-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 28px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.carousel-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+}
+.carousel-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
 }
 .carousel {
   display: flex;
   overflow-x: auto;
-  gap: 12px;
-  padding: 10px;
+  gap: 10px;
+  padding: 8px;
+  scrollbar-width: none;
 }
+.carousel::-webkit-scrollbar {
+  display: none;    
+}
+/*時間ごとのカード*/
 .hour-card {
-  min-width: 80px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  min-width: 70px;
   background: rgba(255,255,255,0.3);
-  border-radius: 12px;
-  padding: 10px;
+  border-radius: 14px;
+  padding: 8px;
   text-align: center;
   flex-shrink: 0;
 }

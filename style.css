@@ -3,10 +3,6 @@ body{
     max-width: 400px;
 }
 
-.bg-morning{background-image: url(../assets/bg/weatherapp-morning.jpg);}
-.bg-lunch{background-image: url(../assets/bg/weatherapp-lunch.jpg);}
-.bg-evening{background-image: url(../assets/bg/weatherapp-evening.jpg);}
-.bg-night{background-image: url(../assets/bg/weatherapp-night.jpg);}
 
 .app-title{
     display: block;
@@ -90,7 +86,7 @@ body{
   content: "";
   position: absolute;
   top: 0;
-  width: 28px;
+  width: 30px;
   height: 100%;
   pointer-events: none;
   z-index: 1;
@@ -108,11 +104,8 @@ body{
   overflow-x: auto;
   gap: 10px;
   padding: 8px;
-  scrollbar-width: none;
 }
-.carousel::-webkit-scrollbar {
-  display: none;    
-}
+
 /*時間ごとのカード*/
 .hour-card {
   flex-shrink: 0;

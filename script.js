@@ -9,18 +9,18 @@ let todos = JSON.parse(localStorage.getItem("todo"))||[];
 //bg：時間に合わせた背景画像設定
 function setBackgroundByTime(){
   const hour = new Date().getHours();
-  let className = "";
+  let imageName = "";
 
   if(hour>=4 && hour<9){
-    className = "bg-morning";
+    imageName = "weatherapp-morning.jpg";
   }else if(hour>=9 && hour<15){
-    className = "bg-lunch";
+    imageName = "weatherapp-lunch.jpg";
   }else if(hour>=15 && hour<19){
-    className = "bg-evening";
-  }else if(hour>=19 && hour<4){
-    className = "bg-night";
+    imageName = "weatherapp-evening.jpg";
+  }else{
+    imageName = "weatherapp-night.jpg";
   }
-  document.body.className = className;
+  document.body.style.backgroundImage = `url('assets/bg/${imageName}')`;
 }
 //今日の天気API取得
 async function getWeather() {
@@ -72,12 +72,22 @@ async function getDateWeather() {
   const data = await res.json();
 
   const targetHours = ["06:00:00","09:00:00","12:00:00","15:00:00","18:00:00","21:00:00"];
-  const today = new Date().toISOString().slice(0,10);
+
+  const now = new Date();
+
+  // 今日
+  const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+
+  // 明日
+  const tomorrowDate = new Date(now);
+  tomorrowDate.setDate(now.getDate() + 1);
+
+  const tomorrow = `${tomorrowDate.getFullYear()}-${String(tomorrowDate.getMonth()+1).padStart(2,'0')}-${String(tomorrowDate.getDate()).padStart(2,'0')}`;
 
   const todayList = data.list.filter(item => {
     const date = item.dt_txt.slice(0,10);
     const time = item.dt_txt.slice(11);
-    return date === today && targetHours.includes(time);
+    return (date === today || date === tomorrow) && targetHours.includes(time);
   });
 
   const container = document.getElementById("hourly");
@@ -95,9 +105,14 @@ async function getDateWeather() {
         <div>${temp}℃</div>
       </div>
     `;
+
     container.insertAdjacentHTML("beforeend", card);
   });
+
+  console.log("カード枚数:", todayList.length);
 }
+
+
 
 
 setBackgroundByTime();

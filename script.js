@@ -1,31 +1,36 @@
+//API取得
 const API_KEY = "b69db5cd64b821b1a36ced40ce6d3c34";
 const CITY = "Tokyo";
 
-
+//JSON.parse() = 取得したJSON文字列のデータを、JavaScriptで扱えるオブジェクトに変換
+//localStorageを活用してtodoリストを取得
 let todos = JSON.parse(localStorage.getItem("todo"))||[];
 
-
-
-//bg：時間に合わせた背景画像設定
+// bg：時間に合わせた背景画像設定
 function setBackgroundByTime(){
+  //定数hour（現在時刻の取得 ▶ 時間の取得）
   const hour = new Date().getHours();
-  let imageName = "";
 
+  let imageName = "";
   if(hour>=4 && hour<9){
     imageName = "weatherapp-morning.jpg";
-  }else if(hour>=9 && hour<15){
+  }else if(hour<15){
     imageName = "weatherapp-lunch.jpg";
-  }else if(hour>=15 && hour<19){
+  }else if(hour<19){
     imageName = "weatherapp-evening.jpg";
   }else{
     imageName = "weatherapp-night.jpg";
   }
+  //HTML(body)-CSS(backroundimage)
+  //テンプレートリテラル - ${A}
   document.body.style.backgroundImage = `url('assets/bg/${imageName}')`;
 }
+
 //今日の天気API取得
 async function getWeather() {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}&units=metric&lang=ja`;
   const res = await fetch(url);
+  //「res.ok = データの取得完了」ができてない場合
   if (!res.ok) {
     console.error("APIエラー:", res.status);
     return;
@@ -33,13 +38,14 @@ async function getWeather() {
 
   const data = await res.json();
   console.log(data);
-
+  //// HTML(id) - text上書き = 上書き内容
   document.getElementById("temp-max").textContent = Math.round(data.main.temp_max) + "℃";
   document.getElementById("temp-min").textContent = Math.round(data.main.temp_min) + "℃";
   document.getElementById("humidity").textContent = "湿度"+Math.round(data.main.humidity) + "%";
   document.getElementById("wind").textContent = "風速"+Math.round(data.wind.speed) + " m/s";
   document.getElementById("icon").textContent = getWeatherIcon(data.weather[0].main);
 }
+
 //年月日・日付取得
 function renderDate(){
     const date = new Date();
@@ -48,17 +54,25 @@ function renderDate(){
                   ${date.getDate()}日`;
     document.getElementById("date").textContent = text;
 }
+
 //天気ごとのアイコン
 function getWeatherIcon(main) {
+  //早期リターン
   switch (main) {
-    case "Clear": return "☀️";
-    case "Clouds": return "☁️";
-    case "Rain": return "🌧️";
-    case "Snow": return "☃️";
-    default: return "🌤️";
+    case "Clear":
+    return "☀️";
+    case "Clouds":
+    return "☁️";
+    case "Rain":
+    return "🌧️";
+    case "Snow":
+    return "☃️";
+    default:
+    return "🌤️";
   }
 }
-//5day3hourの天気API取得
+
+//5day3hourの天気API取得（2日分表示）
 async function getDateWeather() { 
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=Tokyo&appid=${API_KEY}&units=metric&lang=ja`;
   const res = await fetch(url);
@@ -77,8 +91,7 @@ async function getDateWeather() {
   // 明日
   const tomorrowDate = new Date(now);
   tomorrowDate.setDate(now.getDate() + 1);
-  const tomorrow =
-    `${tomorrowDate.getFullYear()}-${String(tomorrowDate.getMonth()+1).padStart(2,'0')}-${String(tomorrowDate.getDate()).padStart(2,'0')}`;
+  const tomorrow =`${tomorrowDate.getFullYear()}-${String(tomorrowDate.getMonth()+1).padStart(2,'0')}-${String(tomorrowDate.getDate()).padStart(2,'0')}`;
 
   // 今日＋明日だけ取得
   const filteredList = data.list.filter(item => {
@@ -163,6 +176,7 @@ function updateCenterDate() {
   }
 }
 
+//
 window.addEventListener("DOMContentLoaded", () => {
 
   setBackgroundByTime();

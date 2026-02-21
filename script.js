@@ -88,12 +88,13 @@ async function getDateWeather() {
   // 今日
   const today =`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
 
-  // 明日
+  // 明日(今日分が上書きされないようにまず定義する！)
   const tomorrowDate = new Date(now);
   tomorrowDate.setDate(now.getDate() + 1);
   const tomorrow =`${tomorrowDate.getFullYear()}-${String(tomorrowDate.getMonth()+1).padStart(2,'0')}-${String(tomorrowDate.getDate()).padStart(2,'0')}`;
 
   // 今日＋明日だけ取得
+  // YYYY-MM-DD(0-10) HH:mm:ss(11-)
   const filteredList = data.list.filter(item => {
     const date = item.dt_txt.slice(0,10);
     const time = item.dt_txt.slice(11);
@@ -104,11 +105,15 @@ async function getDateWeather() {
   const grouped = {};
   filteredList.forEach(item => {
     const date = item.dt_txt.slice(0,10);
+    //新しい日付の引き出しを作成
     if (!grouped[date]) {
       grouped[date] = [];
     }
+    //Array.prototype.push()を活用
     grouped[date].push(item);
   });
+
+  //hourlyを掃除
   const container = document.getElementById("hourly");
   container.innerHTML = "";
 
@@ -116,17 +121,18 @@ async function getDateWeather() {
   for (const date in grouped) {
     const dateObj = new Date(date);
     const label = `${dateObj.getMonth()+1}/${dateObj.getDate()}`;
+    //カードを一時的に貯めておくための「空の箱」を用意
     let cardsHTML = "";
 
     grouped[date].forEach((item, index) => {
       const time = item.dt_txt.slice(11,16);
       const temp = Math.round(item.main.temp);
       const icon = getWeatherIcon(item.weather[0].main);
-
+      //カードを次々作成
       cardsHTML += `
         <div class="hour-card"
             data-date="${date}"
-            style="animation-delay:${index * 0.1}s">
+            style="animation-delay:${index * 0.2}s"> //0.2秒ごとに出てくるかな
           <div>${time}</div>
           <div class="hour-icon">${icon}</div>
           <div>${temp}℃</div>
@@ -143,25 +149,26 @@ async function getDateWeather() {
       </div>
     `;
 
+    // insertAdjacentHTML : 指定した場所に作成したHTMLを差し込む命令（今日明日の分が挿入）
     container.insertAdjacentHTML("beforeend", section);
   }
   //日付を常に表示
   setTimeout(updateCenterDate, 100);
 }
 
-//
+//日付真ん中表記＋下記データスクロール
 function updateCenterDate() {
   const container = document.getElementById("hourly");
   const cards = document.querySelectorAll(".hour-card");
   const containerCenter = container.scrollLeft + container.offsetWidth / 2;
 
   let closestCard = null;
-  let closestDistance = Infinity;
+  let closestDistance = Infinity;  //無限大
 
   cards.forEach(card => {
     const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-    const distance = Math.abs(containerCenter - cardCenter);
-    if (distance < closestDistance) {
+    const distance = Math.abs(containerCenter - cardCenter);     //絶対値
+    if (distance < closestDistance) {                            //無限に設定したものよりも距離が近くにある場合（確定）
       closestDistance = distance;
       closestCard = card;
     }
@@ -176,7 +183,7 @@ function updateCenterDate() {
   }
 }
 
-//
+//DOMContentLoaded：準備が完璧に整ったらすべて実行
 window.addEventListener("DOMContentLoaded", () => {
 
   setBackgroundByTime();

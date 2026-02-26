@@ -3,7 +3,7 @@ body{
     max-width: 400px;
 }
 
-
+/* title */
 .app-title{
     display: block;
     text-align: center;
@@ -15,11 +15,12 @@ body{
     letter-spacing: 3px;
 }
 
+/*main{}*/
 .main{
     margin:0 auto;
 }
 
-/*current-section*/
+/*今日の天気:current-section*/
 .current-weather{
     background-color: #ffffff5f;
     border-radius: 10px;
@@ -70,7 +71,7 @@ body{
 }
 
 
-/*時間ごとの天気*/
+/*時間ごとの天気:dateWeather*/
 .date-weather{
     background-color: #ffffff5f;
     border-radius: 10px;

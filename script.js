@@ -132,7 +132,7 @@ async function getDateWeather() {
       cardsHTML += `
         <div class="hour-card"
             data-date="${date}"
-            style="animation-delay:${index * 0.2}s"> //0.2秒ごとに出てくるかな
+            style="animation-delay:${index * 0.2}s">
           <div>${time}</div>
           <div class="hour-icon">${icon}</div>
           <div>${temp}℃</div>
@@ -154,6 +154,60 @@ async function getDateWeather() {
   }
   //日付を常に表示
   setTimeout(updateCenterDate, 100);
+}
+
+//1weekの天気取得
+async function getWeeklyWeather() {
+
+  //API
+  //取得の住所URLを作成
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=Tokyo&appid=${API_KEY}&units=metric&lang=ja`;
+  //const定数「res」でurlを取得（このときはレスポンス全般）
+  const res = await fetch(url);
+  //const定数「date」でresで取得したレスポンスをJSで使いやすいように（オブジェクトリテラル的な）
+  const data = await res.json();
+  //const定数「grouped」で空箱作り（日付をKEYにしたいので｛｝を使用 / Javaでいうコレクションみたいな）
+  const grouped = {};
+
+  //日付ごとにまとめる
+  data.list.forEach(item => {
+    //item.dt_txt ▶ "2026-02-20 15:00:00" ここからsliceで10文字目まで
+    const date = item.dt_txt.slice(0,10);
+    //日付KEYの箱がない場合作成
+    if(!grouped[date]){
+      grouped[date] = [];
+    }
+    //この日の配列にデータを追加
+    grouped[date].push(item);
+  });
+
+  //const定数「container」に"weekly"というID
+  const container = document.getElementById("weekly");
+  container.innerHTML = "";
+  let count = 0;
+
+  //各日ごとに最高・最低気温を出す
+  for(const date in grouped){
+    //7日分まで表示
+    if(count >= 7) break; 
+    const temps = grouped[date].map(item => item.main.temp);
+    const max = Math.round(Math.max(...temps));
+    const min = Math.round(Math.min(...temps));
+    const icon = getWeatherIcon(grouped[date][0].weather[0].main);
+    const dateObj = new Date(date);
+    const label = `${dateObj.getMonth()+1}/${dateObj.getDate()}`;
+    const card = `
+      <div class="week-card">
+        <div class="week-date">${label}</div>
+        <div class="week-icon">${icon}</div>
+        <div class="week-temp">${max}℃ / ${min}℃</div>
+      </div>
+    `;
+
+    container.insertAdjacentHTML("beforeend", card);
+
+    count++;
+  }
 }
 
 //日付真ん中表記＋下記データスクロール
@@ -190,6 +244,7 @@ window.addEventListener("DOMContentLoaded", () => {
   getWeather();
   renderDate();
   getDateWeather();
+  getWeeklyWeather();
 
   const hourly = document.getElementById("hourly");
   hourly.addEventListener("scroll", updateCenterDate);

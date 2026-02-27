@@ -181,21 +181,28 @@ async function getWeeklyWeather() {
     grouped[date].push(item);
   });
 
-  //const定数「container」に"weekly"というID
+  //const定数「container」にHTML内のID「weekly」からDOM要素を得ている
   const container = document.getElementById("weekly");
   container.innerHTML = "";
   let count = 0;
 
   //各日ごとに最高・最低気温を出す
+  //for文でgroupedのKEYをひとつずつ取り出す
   for(const date in grouped){
     //7日分まで表示
     if(count >= 7) break; 
+    //grouped[date] ▶ この日の3時間ごとのデータ / これを.mapでtempだけの新しい配列を作成
     const temps = grouped[date].map(item => item.main.temp);
+    //最高気温・最低気温の取得
     const max = Math.round(Math.max(...temps));
     const min = Math.round(Math.min(...temps));
+    //その日の最初の時間の weather 配列の1番目
     const icon = getWeatherIcon(grouped[date][0].weather[0].main);
+    //日付専用のオブジェクト
     const dateObj = new Date(date);
+    //dateの月日をgetして「label」に入れる
     const label = `${dateObj.getMonth()+1}/${dateObj.getDate()}`;
+    //HTMLでの表記内容
     const card = `
       <div class="week-card">
         <div class="week-date">${label}</div>
@@ -203,9 +210,9 @@ async function getWeeklyWeather() {
         <div class="week-temp">${max}℃ / ${min}℃</div>
       </div>
     `;
-
+    //insertAdjacentHTML : 指定した場所に作成したHTMLを差し込む命令
     container.insertAdjacentHTML("beforeend", card);
-
+    //ここまでの処理終えたらcountが7になるまで足していく
     count++;
   }
 }

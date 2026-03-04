@@ -201,13 +201,14 @@ async function getWeeklyWeather() {
     //日付専用のオブジェクト
     const dateObj = new Date(date);
     //dateの月日をgetして「label」に入れる
-    const label = `${dateObj.getMonth()+1}/${dateObj.getDate()}`;
+    const label = `${dateObj.getMonth()+1}/${dateObj.getDate()+1}`;
     //HTMLでの表記内容
     const card = `
       <div class="week-card">
         <div class="week-date">${label}</div>
         <div class="week-icon">${icon}</div>
-        <div class="week-temp">${max}℃ / ${min}℃</div>
+        <div class="week-temp-max">${max}℃</div>
+        <div class="week-temp-min">${min}℃</div>
       </div>
     `;
     //insertAdjacentHTML : 指定した場所に作成したHTMLを差し込む命令

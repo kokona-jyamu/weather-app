@@ -137,5 +137,40 @@ body{
   z-index: 10;
 }
 
-
-
+/*週間天気:weeklyWeather*/
+.weekly-weather{
+    background-color: #ffffff5f;
+    border-radius: 10px;
+    padding: 10px 30px 15px 20px;
+    margin: 40px 10px;
+}
+.week-card {
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.3);
+  border-radius: 14px;
+  padding: 8px;
+  flex-shrink: 0;
+  width: 80px;
+  height: 110px;      
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  scroll-snap-align: start;
+  justify-content: space-between;
+}
+.weekly-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 10px;
+  opacity: 0.7;
+}
+.week-temp-max{
+  font-weight:bold;
+  font-size: 15px;
+  color: rgba(105, 37, 37, 0.61);
+}
+.week-temp-min{
+    font-weight:bold;
+    font-size: 14px;
+    color: rgba(23, 61, 131, 0.61);
+}

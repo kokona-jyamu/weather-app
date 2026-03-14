@@ -26,9 +26,48 @@ function setBackgroundByTime(){
   document.body.style.backgroundImage = `url('assets/bg/${imageName}')`;
 }
 
+//都市検索
+const params = new URLSearchParams(window.location.search);
+const city = params.get("city");
+if (city) {
+    document.getElementById("city-name").textContent = city;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric&lang=ja`;
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const result = document.getElementById("result");
+            if (data || data.cod != 200) {
+                result.innerHTML = "<p>天気情報を取得できませんでした。</p>";
+            }
+        })
+        .catch(error => {
+            document.getElementById("result").innerHTML = "<p>通信エラーが発生しました。</p>";
+        });
+}
+
 //今日の天気API取得
 async function getWeather() {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}&units=metric&lang=ja`;
+  const res = await fetch(url);
+  //「res.ok = データの取得完了」ができてない場合
+  if (!res.ok) {
+    console.error("APIエラー:", res.status);
+    return;
+  }
+
+  const data = await res.json();
+  console.log(data);
+  //// HTML(id) - text上書き = 上書き内容
+  document.getElementById("temp-max").textContent = Math.round(data.main.temp_max) + "℃";
+  document.getElementById("temp-min").textContent = Math.round(data.main.temp_min) + "℃";
+  document.getElementById("humidity").textContent = "湿度"+Math.round(data.main.humidity) + "%";
+  document.getElementById("wind").textContent = "風速"+Math.round(data.wind.speed) + " m/s";
+  document.getElementById("icon").textContent = getWeatherIcon(data.weather[0].main);
+}
+
+//各都市の今日の天気API取得
+async function getWeatherFavorite() {
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=ja`;
   const res = await fetch(url);
   //「res.ok = データの取得完了」ができてない場合
   if (!res.ok) {
@@ -250,6 +289,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   setBackgroundByTime();
   getWeather();
+  getWeatherFavorite()
   renderDate();
   getDateWeather();
   getWeeklyWeather();

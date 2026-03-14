@@ -185,19 +185,24 @@ body{
   gap: 10px;
   margin-bottom: 50px;
 }
-
-/* コンテンツ非表示 */
+/* 各ボタンデザイン */
 .tab-content {
-    display: block;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    color: rgb(252, 255, 188);
-    font-size: 13px;
-    padding: 15px 15px;
-    letter-spacing: 3px;
-    flex: 1; /* 均等幅 */
-    min-width: 60px;
-    background-color: rgba(251, 253, 255, 0.631);
-    border-radius: 30px; /* 丸み */
+  display: block;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  color:#423f3bd7;
+  font-size: 13px;
+  padding: 15px 15px;
+  letter-spacing: 3px;
+  flex: 1; /* 均等幅 */
+  min-width: 60px;
+  background-color: rgba(251, 253, 255, 0.631);
+  border-radius: 30px; /* 丸み */
+}
+/* カーソル合わせたとき */
+.tab-content:hover{
+  font-size: bold;
+  color:rgba(251, 253, 255, 0.631);
+  background-color: #423f3bd7;
 }

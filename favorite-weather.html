@@ -26,14 +26,17 @@
             <!--今日の天気-->
             <section class="current-weather">
                 <p class="date" id="date">YYYY年MM月DD日</p>
-                <p class="current-map" id="city-name"></p>
+                <div class="weather-row">
+                    <p class="current-map" id="city-name"></p>
+                    <button class="fav-btn active">☆</button>
+                </div>
                 <div class="weather-row">
                     <div class="temp-range">
-                        <span class="temp-max" id="temp-max">26℃</span>
-                        <span>/</span>
-                        <span class="temp-min" id="temp-min">19℃</span>
+                        <span class="temp-max" id="temp-max"></span>
+                        <span class="temp-space" id="temp-spc"></span>
+                        <span class="temp-min" id="temp-min"></span>
                     </div>
-                    <div class="weather-icon" id="icon">🌤️</div>
+                    <div class="weather-icon" id="icon"></div>
                 </div>
                 <div class="border">＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</div>
                 <div class="weather-row">
@@ -41,10 +44,10 @@
                         <p>今日の詳細▶</p>
                     </div>
                     <div class="current-detail">
-                        <span id="humidity">10%</span>
+                        <span id="humidity">%</span>
                     </div>
                     <div class="current-detail">
-                        <span id="wind">1m/s</span>
+                        <span id="wind">m/s</span>
                     </div>
                 </div>
             </section>

@@ -58,9 +58,9 @@ async function getWeather() {
   const data = await res.json();
   console.log(data);
   //// HTML(id) - text上書き = 上書き内容
-  document.getElementById("temp-max").textContent = Math.round(data.main.temp_max) + "℃";
+  document.getElementById("temp-max").textContent = Math.ceil(data.main.temp_max) + "℃";
   document.getElementById("temp-spc").textContent = "/";
-  document.getElementById("temp-min").textContent = Math.round(data.main.temp_min) + "℃";
+  document.getElementById("temp-min").textContent = Math.floor(data.main.temp_min) + "℃";
   document.getElementById("humidity").textContent = "湿度"+Math.round(data.main.humidity) + "%";
   document.getElementById("wind").textContent = "風速"+Math.round(data.wind.speed) + " m/s";
   document.getElementById("icon").textContent = getWeatherIcon(data.weather[0].main);
@@ -79,9 +79,9 @@ async function getWeatherFavorite() {
   const data = await res.json();
   console.log(data);
   //// HTML(id) - text上書き = 上書き内容
-  document.getElementById("temp-max").textContent = Math.round(data.main.temp_max) + "℃";
+  document.getElementById("temp-max").textContent = Math.ceil(data.main.temp_max) + "℃";
   document.getElementById("temp-spc").textContent = "/";
-  document.getElementById("temp-min").textContent = Math.round(data.main.temp_min) + "℃";
+  document.getElementById("temp-min").textContent = Math.floor(data.main.temp_min) + "℃";
   document.getElementById("humidity").textContent = "湿度"+Math.round(data.main.humidity) + "%";
   document.getElementById("wind").textContent = "風速"+Math.round(data.wind.speed) + " m/s";
   document.getElementById("icon").textContent = getWeatherIcon(data.weather[0].main);
@@ -235,8 +235,8 @@ async function getWeeklyWeather() {
     //grouped[date] ▶ この日の3時間ごとのデータ / これを.mapでtempだけの新しい配列を作成
     const temps = grouped[date].map(item => item.main.temp);
     //最高気温・最低気温の取得
-    const max = Math.round(Math.max(...temps));
-    const min = Math.round(Math.min(...temps));
+    const max = Math.ceil(Math.max(...temps));
+    const min = Math.floor(Math.min(...temps));
     //その日の最初の時間の weather 配列の1番目
     const icon = getWeatherIcon(grouped[date][0].weather[0].main);
     //日付専用のオブジェクト

@@ -47,7 +47,7 @@ if (city) {
 
 //今日の天気API取得
 async function getWeather() {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}&units=metric&lang=ja`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=ja`;
   const res = await fetch(url);
   //「res.ok = データの取得完了」ができてない場合
   if (!res.ok) {
@@ -59,6 +59,7 @@ async function getWeather() {
   console.log(data);
   //// HTML(id) - text上書き = 上書き内容
   document.getElementById("temp-max").textContent = Math.round(data.main.temp_max) + "℃";
+  document.getElementById("temp-spc").textContent = "/";
   document.getElementById("temp-min").textContent = Math.round(data.main.temp_min) + "℃";
   document.getElementById("humidity").textContent = "湿度"+Math.round(data.main.humidity) + "%";
   document.getElementById("wind").textContent = "風速"+Math.round(data.wind.speed) + " m/s";
@@ -79,6 +80,7 @@ async function getWeatherFavorite() {
   console.log(data);
   //// HTML(id) - text上書き = 上書き内容
   document.getElementById("temp-max").textContent = Math.round(data.main.temp_max) + "℃";
+  document.getElementById("temp-spc").textContent = "/";
   document.getElementById("temp-min").textContent = Math.round(data.main.temp_min) + "℃";
   document.getElementById("humidity").textContent = "湿度"+Math.round(data.main.humidity) + "%";
   document.getElementById("wind").textContent = "風速"+Math.round(data.wind.speed) + " m/s";
@@ -113,7 +115,7 @@ function getWeatherIcon(main) {
 
 //5day3hourの天気API取得（2日分表示）
 async function getDateWeather() { 
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=Tokyo&appid=${API_KEY}&units=metric&lang=ja`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric&lang=ja`;
   const res = await fetch(url);
   if (!res.ok) {
     console.error("APIエラー:", res.status);
@@ -200,7 +202,7 @@ async function getWeeklyWeather() {
 
   //API
   //取得の住所URLを作成
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=Tokyo&appid=${API_KEY}&units=metric&lang=ja`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric&lang=ja`;
   //const定数「res」でurlを取得（このときはレスポンス全般）
   const res = await fetch(url);
   //const定数「date」でresで取得したレスポンスをJSで使いやすいように（オブジェクトリテラル的な）
@@ -284,18 +286,87 @@ function updateCenterDate() {
   }
 }
 
+//お気に入り登録
+const MAX = 4;
+function getFavorites() {
+  const data = localStorage.getItem('favorites');
+  if (!data || data === "undefined") return [];
+  try {
+    return JSON.parse(data);
+  } catch {
+    return [];
+  }
+}
+// 保存
+function saveFavorites(favs) {
+  localStorage.setItem('favorites', JSON.stringify(favs));
+}
+// イベント委任
+document.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('fav-btn')) return;
+
+  const btn = e.target;
+
+  // ★ 都市名取得（ここ重要）
+  const place = document.getElementById("city-name").textContent.trim();
+
+  if (!place) return;
+
+  let favs = getFavorites();
+
+  if (favs.includes(place)) {
+    favs = favs.filter(f => f !== place);
+    btn.classList.remove('active');
+  } else {
+    if (favs.length >= MAX) {
+      alert('お気に入りは4件までです');
+      return;
+    }
+    favs.push(place);
+    btn.classList.add('active');
+  }
+
+  saveFavorites(favs);
+});
+// 状態復元（ページ読み込み時）
+function restoreFavoriteState() {
+  const favs = getFavorites();
+  const place = document.getElementById("city-name").textContent.trim();
+  const btn = document.querySelector('.fav-btn');
+
+  if (!btn || !place) return;
+
+  if (favs.includes(place)) {
+    btn.classList.add('active');
+  } else {
+    btn.classList.remove('active');
+  }
+}
+
+
+
+
 //DOMContentLoaded：準備が完璧に整ったらすべて実行
 window.addEventListener("DOMContentLoaded", () => {
 
   setBackgroundByTime();
-  getWeather();
-  getWeatherFavorite()
   renderDate();
-  getDateWeather();
-  getWeeklyWeather();
+
+  // city取得（デフォルトTokyo対応）
+  const params = new URLSearchParams(window.location.search);
+  const cityParam = params.get("city") || "Tokyo";
+
+  document.getElementById("city-name").textContent = cityParam;
+
+  getWeather(cityParam);
+  getDateWeather(cityParam);
+  getWeeklyWeather(cityParam);
+
+  restoreFavoriteState();
 
   const hourly = document.getElementById("hourly");
-  hourly.addEventListener("scroll", updateCenterDate);
-
+  if (hourly) {
+    hourly.addEventListener("scroll", updateCenterDate);
+  }
 });
 

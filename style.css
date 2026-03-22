@@ -20,9 +20,43 @@ body{
     margin:0 auto;
 }
 
+
+/*検索欄*/
+.search-form{
+    align-items: center;
+    margin-left: 30px;
+}
+.search-city{
+    color:#ffffffe7;
+    font-size:17px;
+    letter-spacing: 2px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.search-cityname{
+    ime-mode: auto;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    height: 25px;
+    margin-left:3px;
+    margin-right:8px;
+}
+.search-check{
+    padding: 3px 8px 6px 8px;
+    color:#423f3bd7;
+    background-color: rgba(251, 253, 255, 0.631);
+    border:none;
+    border-radius: 10%;
+}
+.search-check:hover{
+  font-size: bold;
+  color:rgba(251, 253, 255, 0.631);
+  background-color: #423f3bd7;
+}
+
 /*今日の天気:current-section*/
 .current-weather{
-    background-color: #ffffff5f;
+    background-color:rgba(245, 245, 245, 0.7);
     border-radius: 10px;
     padding: 10px 35px 10px 35px;
     margin: 20px 10px;
@@ -39,6 +73,48 @@ body{
     font-size: 20px;
     color: #423f3bd7;
 }
+/* .fav-btn {
+  border: none;
+  padding: 3px 8px 6px 8px;
+  border-radius: 10%;
+  background-color:transparent;
+  color:#423f3bd7;
+  font-size: 20px;
+  font-weight: bold;
+}
+.fav-btn:hover{
+  font-weight: bold;
+  color:rgba(251, 253, 255, 0.631);
+  background-color: #423f3bd7;
+}
+.fav-btn.active {
+  color: gold;
+  transform: translateY(-2px) scale(1.2);
+} */
+ .fav-btn {
+  background: none;
+  border: none;
+  padding: 3px 8px 6px 8px;
+  font-size: 20px;
+  color: #423f3bd7;
+  cursor: pointer;
+  transition: 
+    transform 0.5s ease,
+    color 0.5s ease,
+    filter 0.5s ease;
+}
+.fav-btn:hover {
+  color: rgba(105, 37, 37, 0.61);
+  border-radius: 10%;
+}
+.fav-btn:active {
+  transform: scale(0.85);
+}
+.fav-btn.active {
+  color: gold;
+  transform: translateY(-3px) scale(1.2);
+  filter: drop-shadow(0 6px 10px rgba(255, 215, 0, 0.4));
+}
 .weather-row{
   display: flex;
   align-items: center;   
@@ -50,6 +126,11 @@ body{
     font-weight:bold;
     font-size: 40px;
     color: rgba(105, 37, 37, 0.61);
+}
+.temp-space{
+ color: #4f4e4dd7;
+ font-size: bold;
+ font-size: 25px;
 }
 .temp-min{
     font-weight:bold;
@@ -73,7 +154,7 @@ body{
 
 /*時間ごとの天気:dateWeather*/
 .date-weather{
-    background-color: #ffffff5f;
+    background-color:rgba(245, 245, 245, 0.7);
     border-radius: 10px;
     padding: 10px 30px 15px 30px;
     margin: 40px 10px;
@@ -139,7 +220,7 @@ body{
 
 /*週間天気:weeklyWeather*/
 .weekly-weather{
-    background-color: #ffffff5f;
+    background-color:rgba(245, 245, 245, 0.7);
     border-radius: 10px;
     padding: 10px 30px 15px 20px;
     margin: 40px 10px;
@@ -150,8 +231,7 @@ body{
   border-radius: 14px;
   padding: 8px;
   flex-shrink: 0;
-  width: 80px;
-  height: 110px;      
+  min-width: 70px;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -165,12 +245,10 @@ body{
   opacity: 0.7;
 }
 .week-temp-max{
-  font-weight:bold;
   font-size: 15px;
   color: rgba(105, 37, 37, 0.61);
 }
 .week-temp-min{
-    font-weight:bold;
     font-size: 14px;
     color: rgba(23, 61, 131, 0.61);
 }

@@ -73,24 +73,6 @@ body{
     font-size: 20px;
     color: #423f3bd7;
 }
-/* .fav-btn {
-  border: none;
-  padding: 3px 8px 6px 8px;
-  border-radius: 10%;
-  background-color:transparent;
-  color:#423f3bd7;
-  font-size: 20px;
-  font-weight: bold;
-}
-.fav-btn:hover{
-  font-weight: bold;
-  color:rgba(251, 253, 255, 0.631);
-  background-color: #423f3bd7;
-}
-.fav-btn.active {
-  color: gold;
-  transform: translateY(-2px) scale(1.2);
-} */
  .fav-btn {
   background: none;
   border: none;

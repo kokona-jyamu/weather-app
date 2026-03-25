@@ -16,12 +16,15 @@
         <!--main-page-->
         <main class="main">
 
-             <!--お気に入り地域表示（4か所まで）-->
+             <!--都市名検索-->
             <form class="search-form" method="get" action="">
                 <label class="search-city" for="city">都市名検索:</label>
                 <input class="search-cityname" type="text" id="city" name="city" required>
                 <button class="search-check" type="submit">確認</button>
             </form>
+
+            <!--お気に入り地域表示（4か所まで）-->
+            <div id="favorite-tabs"></div>
 
             <!--今日の天気-->
             <section class="current-weather">
@@ -77,7 +80,6 @@
             <section>
                 <div class="tab-switch">
                         <a href="index.html" class="tab-content">天気</a> 
-                        <a href="favorite-weather.html" class="tab-content">お気に入り</a> 
                         <a href="setting-page.html" class="tab-content">設定</a> 
                         </label> 
             </section>

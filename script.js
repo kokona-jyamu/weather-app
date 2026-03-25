@@ -1,6 +1,7 @@
 //API取得
 const API_KEY = "b69db5cd64b821b1a36ced40ce6d3c34";
-const CITY = "Tokyo";
+
+let currentCity = "";
 
 //JSON.parse() = 取得したJSON文字列のデータを、JavaScriptで扱えるオブジェクトに変換
 //localStorageを活用してtodoリストを取得
@@ -28,7 +29,7 @@ function setBackgroundByTime(){
 
 //都市検索
 const params = new URLSearchParams(window.location.search);
-const city = params.get("city");
+currentCity = params.get("city") || "Tokyo";
 if (city) {
     document.getElementById("city-name").textContent = city;
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric&lang=ja`;
@@ -46,7 +47,7 @@ if (city) {
 }
 
 //今日の天気API取得
-async function getWeather() {
+async function getWeather(city) {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=ja`;
   const res = await fetch(url);
   //「res.ok = データの取得完了」ができてない場合
@@ -114,7 +115,7 @@ function getWeatherIcon(main) {
 }
 
 //5day3hourの天気API取得（2日分表示）
-async function getDateWeather() { 
+async function getDateWeather(city) { 
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric&lang=ja`;
   const res = await fetch(url);
   if (!res.ok) {
@@ -198,7 +199,7 @@ async function getDateWeather() {
 }
 
 //1weekの天気取得
-async function getWeeklyWeather() {
+async function getWeeklyWeather(city) {
 
   //API
   //取得の住所URLを作成
@@ -342,6 +343,40 @@ function restoreFavoriteState() {
     btn.classList.remove('active');
   }
 }
+//お気に入り削除用
+function removeFavorite(city) {
+  let favs = getFavorites();
+  favs = favs.filter(f => f !== city);
+  saveFavorites(favs);
+}
+
+//お気に入りの一覧表示
+function renderFavoriteTabs() {
+  const container = document.getElementById("favorite-tabs");
+  if (!container) return;
+
+  const favs = getFavorites();
+  container.innerHTML = "";
+
+  favs.forEach(city => {
+    const tab = document.createElement("button");
+    tab.className = "fav-tab";
+    tab.textContent = city;
+
+  tab.addEventListener("click", () => {
+    currentCity = city;
+
+    document.getElementById("city-name").textContent = currentCity;
+
+    getWeather(currentCity);
+    getDateWeather(currentCity);
+    getWeeklyWeather(currentCity);
+
+    restoreFavoriteState();
+  });
+    container.appendChild(tab);
+  });
+}
 
 
 
@@ -352,15 +387,11 @@ window.addEventListener("DOMContentLoaded", () => {
   setBackgroundByTime();
   renderDate();
 
-  // city取得（デフォルトTokyo対応）
-  const params = new URLSearchParams(window.location.search);
-  const cityParam = params.get("city") || "Tokyo";
+  document.getElementById("city-name").textContent = currentCity;
 
-  document.getElementById("city-name").textContent = cityParam;
-
-  getWeather(cityParam);
-  getDateWeather(cityParam);
-  getWeeklyWeather(cityParam);
+  getWeather(currentCity);
+  getDateWeather(currentCity);
+  getWeeklyWeather(currentCity);
 
   restoreFavoriteState();
 
@@ -368,5 +399,7 @@ window.addEventListener("DOMContentLoaded", () => {
   if (hourly) {
     hourly.addEventListener("scroll", updateCenterDate);
   }
+
+  renderFavoriteTabs();
 });
 

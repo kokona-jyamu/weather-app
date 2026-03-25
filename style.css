@@ -54,6 +54,36 @@ body{
   background-color: #423f3bd7;
 }
 
+/*favorite-button*/
+#favorite-tabs{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px;
+  margin-top: 20px;
+}
+.fav-tab{
+  color:#423f3bd7;
+  background-color: rgba(251, 253, 255, 1);
+  padding: 10px 14px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 1px;
+  font-size: 17px;
+  gap: 3px;
+}
+.fav-tab:hover{
+  cursor: pointer;
+  color:#423f3bd7;
+  background-color: rgba(251, 253, 255, 0.631);
+}
+.remove-btn{
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
 /*今日の天気:current-section*/
 .current-weather{
     background-color:rgba(245, 245, 245, 0.7);

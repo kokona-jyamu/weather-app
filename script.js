@@ -7,7 +7,7 @@ let currentCity = "";
 //localStorageを活用してtodoリストを取得
 let todos = JSON.parse(localStorage.getItem("todo"))||[];
 
-// bg：時間に合わせた背景画像設定
+// // bg：時間に合わせた背景画像設定
 function setBackgroundByTime(){
   //定数hour（現在時刻の取得 ▶ 時間の取得）
   const hour = new Date().getHours();
@@ -25,19 +25,19 @@ function setBackgroundByTime(){
   //HTML(body)-CSS(backroundimage)
   //テンプレートリテラル - ${A}
   document.body.style.backgroundImage = `url('assets/bg/${imageName}')`;
-}
+ }
 
 //都市検索
 const params = new URLSearchParams(window.location.search);
 currentCity = params.get("city") || "Tokyo";
-if (city) {
-    document.getElementById("city-name").textContent = city;
+if (currentCity) {
+    document.getElementById("city-name").textContent = currentCity;
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric&lang=ja`;
     fetch(url)
         .then(response => response.json())
         .then(data => {
             const result = document.getElementById("result");
-            if (data || data.cod != 200) {
+            if (!data || data.cod != 200) {
                 result.innerHTML = "<p>天気情報を取得できませんでした。</p>";
             }
         })
@@ -378,9 +378,6 @@ function renderFavoriteTabs() {
   });
 }
 
-
-
-
 //DOMContentLoaded：準備が完璧に整ったらすべて実行
 window.addEventListener("DOMContentLoaded", () => {
 
@@ -402,4 +399,3 @@ window.addEventListener("DOMContentLoaded", () => {
 
   renderFavoriteTabs();
 });
-
